@@ -14,7 +14,7 @@ A conversational AI chatbot built with **Flask** and **Hugging Face Transformers
 
 ## Run Locally
 ```bash
-git clone https://github.com/YOUR-USERNAME/ai-chatbot.git
+git clone https://github.com/sparrow-pixeleye/ai-chatbot.git
 cd ai-chatbot
 pip install -r requirements.txt
 python app.py
