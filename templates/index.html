@@ -1,31 +1,258 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>AI Chatbot</title>
-<link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APRATIM'S AI 2.0 - The Ultimate Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#00d4ff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="APRATIM'S AI 2.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
 </head>
 <body>
-<div class="chat-container">
-<h2>🤖 AI Chatbot</h2>
-<div id="chat-box"></div>
-<input type="text" id="user-input" placeholder="Type your message...">
-<button onclick="sendMessage()">Send</button>
-</div>
+    <div id="app">
+        <!-- Loading Screen -->
+        <div id="loadingScreen" class="loading-screen">
+            <div class="loading-content">
+                <div class="ai-logo">
+                    <div class="logo-core"></div>
+                    <div class="logo-ring ring-1"></div>
+                    <div class="logo-ring ring-2"></div>
+                    <div class="logo-ring ring-3"></div>
+                </div>
+                <h1 class="loading-title">APRATIM'S AI 2.0</h1>
+                <p class="loading-subtitle">Initializing Ultimate Intelligence...</p>
+                <div class="loading-bar">
+                    <div class="loading-progress"></div>
+                </div>
+            </div>
+        </div>
 
-<script>
-async function sendMessage() {
-    let userMessage = document.getElementById("user-input").value;
-    document.getElementById("chat-box").innerHTML += "<p><b>You:</b> " + userMessage + "</p>";
-    document.getElementById("user-input").value = "";
-    let response = await fetch("/get", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMessage })
-    });
-    let data = await response.json();
-    document.getElementById("chat-box").innerHTML += "<p><b>Bot:</b> " + data.reply + "</p>";
-}
-</script>
+        <!-- Main App -->
+        <div id="mainApp" class="main-app hidden">
+            <!-- Sidebar -->
+            <div id="sidebar" class="sidebar">
+                <div class="sidebar-header">
+                    <div class="ai-logo-small">
+                        <div class="logo-core-small"></div>
+                    </div>
+                    <h2 class="sidebar-title">APRATIM'S AI 2.0</h2>
+                    <button id="sidebarToggle" class="sidebar-toggle">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 12h18M3 6h18M3 18h18"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <button id="newChatBtn" class="new-chat-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14M5 12h14"/>
+                    </svg>
+                    New Chat
+                </button>
+
+                <div class="chat-history">
+                    <h3 class="history-title">Recent Conversations</h3>
+                    <div id="chatList" class="chat-list">
+                        <!-- Chat history will be populated here -->
+                    </div>
+                </div>
+
+                <div class="sidebar-footer">
+                    <button id="settingsBtn" class="settings-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.24M15.54 15.54l4.24 4.24M1 12h6M17 12h6M4.22 19.78l4.24-4.24M15.54 8.46l4.24-4.24"/>
+                        </svg>
+                        Settings
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div id="mainContent" class="main-content">
+                <!-- Welcome Screen -->
+                <div id="welcomeScreen" class="welcome-screen">
+                    <div class="welcome-content">
+                        <div class="welcome-logo">
+                            <div class="logo-core-large"></div>
+                            <div class="logo-ring-large ring-1"></div>
+                            <div class="logo-ring-large ring-2"></div>
+                            <div class="logo-ring-large ring-3"></div>
+                        </div>
+                        <h1 class="welcome-title">Welcome to APRATIM'S AI 2.0</h1>
+                        <p class="welcome-subtitle">The most intelligent AI assistant ever created</p>
+                        <div class="welcome-features">
+                            <div class="feature-card">
+                                <div class="feature-icon">🧠</div>
+                                <h3>Ultimate Intelligence</h3>
+                                <p>Combines the power of ChatGPT, Gemini, Claude, and more</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">⚡</div>
+                                <h3>Lightning Fast</h3>
+                                <p>Instant responses with zero latency</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">🔮</div>
+                                <h3>Future Aware</h3>
+                                <p>Knows current events and predicts trends</p>
+                            </div>
+                        </div>
+                        <div class="welcome-suggestions">
+                            <h3>Try asking me about:</h3>
+                            <div class="suggestion-chips">
+                                <button class="suggestion-chip" onclick="sendSuggestion('What are the latest AI breakthroughs in 2025?')">Latest AI Breakthroughs</button>
+                                <button class="suggestion-chip" onclick="sendSuggestion('Explain quantum computing like I am 5')">Quantum Computing</button>
+                                <button class="suggestion-chip" onclick="sendSuggestion('Write a Python script for data analysis')">Code Generation</button>
+                                <button class="suggestion-chip" onclick="sendSuggestion('What will technology look like in 2030?')">Future Predictions</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Interface -->
+                <div id="chatInterface" class="chat-interface hidden">
+                    <div id="chatContainer" class="chat-container">
+                        <div id="chatMessages" class="chat-messages">
+                            <!-- Messages will be populated here -->
+                        </div>
+                    </div>
+
+                    <div class="input-container">
+                        <div class="input-wrapper">
+                            <button id="voiceBtn" class="voice-btn" title="Voice Input">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                                    <line x1="12" y1="19" x2="12" y2="23"/>
+                                    <line x1="8" y1="23" x2="16" y2="23"/>
+                                </svg>
+                            </button>
+                            <textarea 
+                                id="messageInput" 
+                                class="message-input" 
+                                placeholder="Ask APRATIM'S AI 2.0 anything..."
+                                rows="1"
+                            ></textarea>
+                            <button id="sendBtn" class="send-btn" disabled>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="22" y1="2" x2="11" y2="13"/>
+                                    <polygon points="22,2 15,22 11,13 2,9"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="input-footer">
+                            <p class="input-hint">APRATIM'S AI 2.0 can make mistakes. Consider checking important information.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div id="settingsModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Settings</h2>
+                    <button id="closeSettings" class="close-btn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="settings-section">
+                        <h3>Theme</h3>
+                        <div class="theme-selector">
+                            <button class="theme-btn active" data-theme="dark">
+                                <div class="theme-preview dark-preview"></div>
+                                <span>Dark</span>
+                            </button>
+                            <button class="theme-btn" data-theme="light">
+                                <div class="theme-preview light-preview"></div>
+                                <span>Light</span>
+                            </button>
+                            <button class="theme-btn" data-theme="aurora">
+                                <div class="theme-preview aurora-preview"></div>
+                                <span>Aurora</span>
+                            </button>
+                            <button class="theme-btn" data-theme="futuristic">
+                                <div class="theme-preview futuristic-preview"></div>
+                                <span>Futuristic</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3>Language</h3>
+                        <select id="languageSelect" class="settings-select">
+                            <option value="en">English</option>
+                            <option value="es">Español</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="zh">中文</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                            <option value="hi">हिन्दी</option>
+                        </select>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>AI Behavior</h3>
+                        <div class="setting-item">
+                            <label class="setting-label">
+                                <input type="checkbox" id="contextMemory" checked>
+                                <span class="checkmark"></span>
+                                Remember conversation context
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label class="setting-label">
+                                <input type="checkbox" id="voiceResponses" checked>
+                                <span class="checkmark"></span>
+                                Enable voice responses
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label class="setting-label">
+                                <input type="checkbox" id="realTimeSearch" checked>
+                                <span class="checkmark"></span>
+                                Real-time web search
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>Privacy</h3>
+                        <button id="clearHistory" class="danger-btn">Clear Chat History</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thinking Indicator -->
+        <div id="thinkingIndicator" class="thinking-indicator hidden">
+            <div class="thinking-content">
+                <div class="thinking-brain">
+                    <div class="brain-wave wave-1"></div>
+                    <div class="brain-wave wave-2"></div>
+                    <div class="brain-wave wave-3"></div>
+                </div>
+                <span class="thinking-text">APRATIM'S AI is thinking...</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>
